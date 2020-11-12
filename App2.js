@@ -16,35 +16,40 @@ const App = () => {
     useEffect(() => {
         async function addData(){
             const response = await axios.get(BASE_URL);
-            // console.log(response.data);
-            let prevData = [];
-            response.data.forEach(element => {
-                let data = {content: element.content, title: element.title}
-                prevData.push(data);
-            });
-            // console.log(prevData);
-            setAddItem(prevData);
+            setAddItem(response.data);
         }
         addData();
-    });
+    }, []);
     
     const addNote = (note) => {
         // alert('clicked');
-
+        const addedNote = axios.post(BASE_URL, note);
+        console.log(addedNote.data);
         setAddItem((prevData) => {
-            return [...prevData, note];
+            return [...prevData, addedNote];
         })
         // console.log(addItem);
 
     };
 
-    const onDelete = (id) => {
+    const onDelete = (key) => {
         setAddItem((prevData) => {
-            const updatedData = prevData.filter((currData, index) => {
-                return index !== id;
-            })
+            // console.log(prevData);
+            // const updatedData = prevData.filter((currData, index) => {
+            //     return index !== id;
+            // })
             // console.log(addItem);
-            return updatedData;
+            const newData = [];
+            prevData.forEach(element => {
+                if(element._id === key){
+                    axios.delete(`${BASE_URL}/${element._id}`)
+                }
+                else{
+                    newData.push(element);
+                }
+            });
+            return newData;
+            
         })
     }
 
@@ -54,8 +59,9 @@ const App = () => {
             <CreateNote
                 passNote={addNote}
             />
+            {/* {console.log(addItem)} */}
             {addItem.map((val, index) => {
-                return <Note key={index} id={index} 
+                return <Note key={val._id} id={val._id} 
                 title={val.title} content={val.content} 
                 deleteItem={onDelete} />
             })}
