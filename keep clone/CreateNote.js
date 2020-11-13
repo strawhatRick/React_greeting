@@ -33,9 +33,9 @@ const CreateNote = (props) => {
     return (
         <>
             <div className='main_note'>
-                <form>
-                    <input type='text' name='title' value={note.title} onChange={InputEvent} placeholder='Title' autoComplete='off' />
-                    <textarea rows='' column='' name='content' value={note.content} onChange={InputEvent} placeholder='Write a note' ></textarea>
+                <form className='create-note'>
+                    <input className='title' type='text' name='title' value={note.title} onChange={InputEvent} placeholder='Title' autoComplete='off' />
+                    <textarea className='content' rows='' column='' name='content' value={note.content} onChange={InputEvent} placeholder='Write a note' ></textarea>
                     <Button onClick={addEvent}>
                         <AddIcon className='plus_sign' />
                     </Button>
